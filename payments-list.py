@@ -11,7 +11,7 @@ client = gocardless_pro.Client(
 
 payments = client.payments.list().records
 print('"date","reference","amount","company","contact","email","payout total"')
-for payment in payments:
+for payment in reversed(payments):
     payout = client.payouts.get(payment.links.payout)
     if payment.links.payout is not None:
         mandate = client.mandates.get(payment.links.mandate)
