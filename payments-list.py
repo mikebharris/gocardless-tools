@@ -10,7 +10,7 @@ client = gocardless_pro.Client(
 )
 
 payments = client.payments.list().records
-print('"date","reference","amount","company","contact","email","payout total"')
+print('"date","reference","company","contact","email","description","amount","payout total"')
 for payment in reversed(payments):
     payout = client.payouts.get(payment.links.payout)
     if payment.links.payout is not None:
@@ -27,15 +27,14 @@ for payment in reversed(payments):
         else:
             contact = customer.given_name + " " + customer.family_name
 
-        print('"{date}","{payoutref}","{amount:.2f}","{company}","{contact}",'
-              '"{email}","{payouttotal:.2f}"'.format(
+        print('"{date}","{payoutref}","{company}","{contact}",'
+              '"{email}","{description}","{amount:.2f}","{payouttotal:.2f}"'.format(
             date=payout.arrival_date,
             payoutref=payout.reference,
-            amount=payment.amount/100,
             company=company_name,
             contact=contact,
             email=customer.email,
-            payouttotal=payout.amount/100
+            description=payment.description,
+            amount=payment.amount / 100,
+            payouttotal=payout.amount / 100
         ))
-
-
